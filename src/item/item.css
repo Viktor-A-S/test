@@ -1,0 +1,11 @@
+.item-buttons {
+    width: 200px;
+}
+
+.item-text{
+    width: 100px;
+}
+
+.item-box{
+    display: -webkit-box;
+}
