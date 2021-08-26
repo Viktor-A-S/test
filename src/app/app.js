@@ -46,7 +46,7 @@ export default class App extends Component {
     return ((id < 0 && id != 0) ? id * -1 : id )
   }
 
-  onMoveItem = (id, dir, col) => {
+  onMoveItem = (id) => {
       const data = this.state;
       const cur = this.getKey(id);
       const toLeft = (Object.is(id, -0)) || Math.sign(id) == -1
