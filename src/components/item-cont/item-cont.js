@@ -1,6 +1,6 @@
-import React , {Component}      from 'react';
+import React , {Component}      from 'react'
 import Item                     from '../item'
-import './item-cont.css';
+import  './item-cont.css';
 
 class ItemCont  extends Component {
 
@@ -8,72 +8,63 @@ class ItemCont  extends Component {
         selectedList: []
     }
 
-    onItemSelect = (id) => {
-        const idx = this.state.selectedList.findIndex(it => it === id)
+    onItemSelect = id => {
+        const idx = this.state.selectedList.findIndex( it => it === id )
         const selectedList = idx < 0 
                 ? [...this.state.selectedList, id] 
-                : [...this.state.selectedList.slice(0,idx), ...this.state.selectedList.slice(idx + 1)]
+                : [...this.state.selectedList.slice( 0, idx ), ...this.state.selectedList.slice(idx + 1)]
         this.setState ({
             selectedList : selectedList
         })
     }
 
-    onSelectedAll = (e, data) => {
+    onSelectedAll = ( e, data ) => {
 
-        const selectedList = e.target.checked ? data.map((it) => {return it.id }) : []
+        const selectedList = e.target.checked ? data.map((it) => { return it.id } ) : []
         this.setState ({
             selectedList : selectedList
         })
     }
 
-    onMoveAll = (id, fx) => {
-        fx(id, this.state.selectedList)
+    onMoveAll = ( id, fx ) => {
+        fx( id, this.state.selectedList )
         this.setState ({
             selectedList : []
         })
     }
 
-    block = (data, key, index, onItemClick, onMoveAll) => {
-        const { selectedList } = this.state
-        const left = key     === "left"  ? "" :   <button  onClick = { ()=> this.onMoveAll(-1, onMoveAll)}>LEFT</button>
-        const right = key    === "right" ? "" :   <button  onClick = { ()=> this.onMoveAll(1, onMoveAll)}>RIGHT</button>
-
-        return (
-            <div className="col-md-4" key = {index}> 
-                <div className="header-name">
-                <input type="checkbox" 
-                    className = "header-checkbox"
-                    //checked = {selectedList.length != 0}
-                    //onClick={ ()=> this.onSelectedAll(data[key]) }
-                    onChange={(e)=> this.onSelectedAll(e, data[key])}
-                />
-                <div className="col-header">COL {index + 1}</div>
-                <div className = "header-buttons">
-                    {left}
-                    {right}
-                </div>
-            </div>
-                <Item 
-                    itemList        = { data[key]} 
-                    column          = { key} 
-                    selectedList    = { selectedList }
-                    onItemClick     = { onItemClick}
-                    onItemSelect    = { this.onItemSelect}
-                />
-            </div>
-        )
-    }
-
     render() {
-        const { data, keys, onItemClick, onMoveAll} = this.props
+        const { col, data, onItemClick, onMoveAll} = this.props
+        const { selectedList } = this.state
+        const left = col     === "left"  ? "" :   <button  onClick = { () => this.onMoveAll( -1, onMoveAll )}>LEFT</button>
+        const right = col    === "right" ? "" :   <button  onClick = { () => this.onMoveAll( 1, onMoveAll )}>RIGHT</button>
 
         return (
-            <div className="row d-flex justify-content-center bd-highlight">
-                {keys.map((item, index) => {
-                    return (
-                        this.block(data, item, index, onItemClick, onMoveAll)
-                    )
-                })}
+            <div > 
+                <div className = "header-name">
+                    <input type = "checkbox" 
+                        className   = "header-checkbox"
+                        checked     = { selectedList.length === data.length && data.length > 0 }
+                        onChange    = { e => this.onSelectedAll(e, data) }
+                    />
+                    <div className="col-header">COL {col.toUpperCase()}</div>
+                    <div className = "header-buttons">
+                        {left}
+                        {right}
+                    </div>
+                </div>
+                <ul className="list-group-item p-1">
+                    { data.map( item  => { return (
+                        <Item 
+                            col             = { col } 
+                            id              = { item.id } 
+                            title           = { item.title } 
+                            checked         = { selectedList.includes(item.id) } 
+                            onItemClick     = { onItemClick }
+                            onItemSelect    = { this.onItemSelect }
+                        />)
+                    })}
+                </ul>
             </div>
         )
     }

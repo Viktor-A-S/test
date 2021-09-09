@@ -1,31 +1,28 @@
-import React from 'react';
-import {  BrowserRouter as Router, 
-    Route, 
-    Link, 
-    Redirect,
-    useLocation}            from 'react-router-dom'
+import React                from 'react';
+import { Link }             from 'react-router-dom'
 import './tabs.css';
 
-const Tabs =  ({data, keys}) => {
+const Tabs =  ( { keys, page } ) => {
+
+    const link = item => {
+
+        const cls = page === item ? 'active' : '' 
+
+        return <li className = {cls} >
+            <Link to = {`/${item}`}  key = { item } >
+                { item.toUpperCase() }
+            </Link>
+        </li>
+    }
+
     return (
-        keys.map(item => {
-            <div className="header d-flex">
-                <ul className="d-flex">
-                {this.getKeys().map(item => {
-                    return (
-                    <li className = ""><Link 
-                        // className = {() => { 
-                        //   return useLocation() == item ? "active" : "" 
-                        // }}
-                        to = {`/${item}`} 
-                        key = {item}>
-                        { item.toUpperCase() }
-                    </Link></li>
-                    )
+        <div className="header d-flex">
+            <ul className="d-flex">
+                { keys.map( item => {
+                    return link( item )
                 })}
-                </ul>
-            </div>
-        })
+            </ul>
+        </div>
     )
 }
 

@@ -1,10 +1,3 @@
-// const getData = data => {
-//     return {
-//         type: 'GET_DATA',
-//         payload: data
-//     }
-// }
-
 const dataRequested = () => {
   return {
     type: 'GET_DATA'
@@ -32,7 +25,7 @@ const onMoveItem = data => {
     }
 }
 
-const fetchData = (withService, dispatch) => () => {
+const fetchData = ( withService, dispatch ) => () => {
   dispatch(dataRequested())
   withService.getData()
       .then((data) => {
@@ -43,15 +36,3 @@ const fetchData = (withService, dispatch) => () => {
 }
 
 export { fetchData, onMoveItem }
-
-// const fetchData = (withService, dispatch) => () => {
-//   return {
-//     getData: () => {
-//       withService.getData().then(
-//         (data) => { dispatch( getData(data) ) }
-//       )
-//     }
-//   }
-// }
-
-// export { getData, onMove, fetchData }

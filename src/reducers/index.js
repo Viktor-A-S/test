@@ -5,7 +5,7 @@ const initialState = {
 const getKeys = (data) => Object.keys(data);
 
 const getKey = (data, id) => {
-  let cur = {key : null, objIdx : null, iIdx : null}
+  let cur = {key : null, oIdx : null, iIdx : null}
   const keys = getKeys(data)
   keys.forEach((key, index)=> {
     var idx = data[key].findIndex(el => el.id === getId(id));

@@ -1,14 +1,12 @@
 import React, { Component }   from 'react'
 import {  BrowserRouter as Router, 
           Route, 
-          Link, 
-          Redirect}           from 'react-router-dom'
+          Redirect,
+          Switch}             from 'react-router-dom'
 import { connect }            from 'react-redux'
 import { withService }        from '../hoc' 
-import ItemCont                   from '../item-cont'
-import Item                   from '../item'
+import ItemCont               from '../item-cont'
 import Tabs                   from '../tabs'
-import Grid                   from '../grid'
 import { fetchData, onMoveItem  }    from '../../actions';
 import    './app.css';
 
@@ -17,40 +15,26 @@ class App extends Component {
   componentDidMount() {
     this.props.fetchData()    
   }
-
-  state = {
-    selectedList: []
-  }
   
-  getKeys = data => Object.keys(this.props.data);
-
-  getId = id => {
-    return ((id < 0 && id != 0) ? id * -1 : id )
+  getKeys = () => {
+    return Object.keys(this.props.data);
   }
 
-  onMoveItem = (id) => {
-    this.props.onMoveItem({id})
+  onMoveItem = id => {
+    this.props.onMoveItem( { id } )
   };
 
-  onMoveAll = (dir, list) => {
+  onMoveAll = ( dir, list ) => {
     list.map((it) => {
       const id = it * dir
       this.props.onMoveItem({id})
     })
   };
 
-  onSelectedAll = (e, data) => {
-
-    const selectedList = e.target.checked ? data.map((it) => {return it.id }) : []
-    this.setState ({
-        selectedList : selectedList
-    })
-}
-
   render () {
     const { data } = this.props
 
-    if ( !data ) 
+    if ( !data  ||  this.getKeys().length == 0) 
       return <div> LOADING !!!</div>;
 
     return (
@@ -58,77 +42,44 @@ class App extends Component {
         <div>
           <div className="header-main d-flex col-md-12 ms-2"></div>
         </div>
+        <div className="row d-flex justify-content-center bd-highlight">
+          {
+            this.getKeys().map(( key ) => { return (
+              <div className="col-md-4" >
+                <ItemCont 
+                    col         = { key}
+                    data        = { data[ key ] } 
+                    onItemClick = { this.onMoveItem }
+                    onMoveAll   = { this.onMoveAll }
+                />
+              </div>
+              )
+            }
+          )}
+        </div>
 
-
-        <ItemCont 
-            data = {data} 
-            onItemClick={this.onMoveItem}
-            onMoveAll={this.onMoveAll}
-            keys = {this.getKeys()}
-          />
-        
-        <Router>
-
-          <div className="header d-flex">
-            <input type="checkbox" 
-                  className = "header-checkbox"
-                  onChange={(e)=> this.onSelectedAll(e, data["left"])}
-              />
-            <ul className="d-flex">
-              {this.getKeys().map(item => {
-                return (
-                  <li>
-                    <Link 
-                      to = {`/${item}`} 
-                      key = {item}
-                      >
-                      { item.toUpperCase() }
-                    </Link>
-                  </li>
-                )
-              })}
-            </ul>
-            <button  onClick = { ()=> this.onMoveAll(-1, data[this.getKeys()])}>LEFT</button>
-            <button  onClick = { ()=> this.onMoveAll(1, data[this.getKeys()])}>RIGHT</button>
-          </div>
-
-
-          {/* <Grid 
-            data        = {data}
-            itemList    = {data[0]} 
-            col         = {"left"} 
-            //selectedList = {[]}
-            onItemClick = {this.onMoveItem}
-          /> */}
-          
-
-          {this.getKeys().map((item, idx) => {
-            return (
-              <Route path = {`/${item}`}
-                render = {() => {
-                  return (
+        <Switch>
+          <Route  path="/:page"
+                  render={({ match: { params: { page }}}) =>
                     <div>
-                      <Grid 
-                        data        = {data}
-                        itemList    = {data[item]} 
-                        col         = {item} 
-                        selectedList = {[]}
-                        onItemClick = {this.onMoveItem}
-                      />
+                        <Tabs keys = { this.getKeys() }  page = { page }/>
+                        <div className="col-md-12" > 
+                          <ItemCont 
+                            col           =   { page }
+                            data          =   { data[ page ] } 
+                            onItemClick   =   { this.onMoveItem }
+                            onMoveAll     =   { this.onMoveAll }
+                          />
+                        </div>
                     </div>
-                  )
-                }}
-              />
-            )
-          })}
-
-          <Route path="/"  render= {() => {return <Redirect to={`/${this.getKeys()[0]}`} />}} />
-        </Router>
+                  }
+          />
+          <Redirect to = {`/${this.getKeys()[0]}`} />
+        </Switch>
       </div>
     )
   }
 }
-
 
 const mapStateToProps = ({...props}) => ({...props})
 
