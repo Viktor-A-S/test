@@ -9,7 +9,9 @@ const Tabs =  ( { keys, page } ) => {
         const cls = page === item ? 'active' : '' 
 
         return <li className = {cls} >
-            <Link to = {`/${item}`}  key = { item } >
+            <Link   to = {`/${item}`}  
+                    key = { item } 
+            >
                 { item.toUpperCase() }
             </Link>
         </li>

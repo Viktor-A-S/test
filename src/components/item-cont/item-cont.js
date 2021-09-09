@@ -12,15 +12,14 @@ class ItemCont  extends Component {
         const idx = this.state.selectedList.findIndex( it => it === id )
         const selectedList = idx < 0 
                 ? [...this.state.selectedList, id] 
-                : [...this.state.selectedList.slice( 0, idx ), ...this.state.selectedList.slice(idx + 1)]
+                : [...this.state.selectedList.slice( 0, idx ), ...this.state.selectedList.slice( idx + 1 )]
         this.setState ({
             selectedList : selectedList
         })
     }
 
     onSelectedAll = ( e, data ) => {
-
-        const selectedList = e.target.checked ? data.map((it) => { return it.id } ) : []
+        const selectedList = e.target.checked ? data.map( it => { return it.id } ) : []
         this.setState ({
             selectedList : selectedList
         })
@@ -36,18 +35,19 @@ class ItemCont  extends Component {
     render() {
         const { col, data, onItemClick, onMoveAll} = this.props
         const { selectedList } = this.state
-        const left = col     === "left"  ? "" :   <button  onClick = { () => this.onMoveAll( -1, onMoveAll )}>LEFT</button>
-        const right = col    === "right" ? "" :   <button  onClick = { () => this.onMoveAll( 1, onMoveAll )}>RIGHT</button>
+        const left =    col === "left"  ? "" :   <button  onClick = { () => this.onMoveAll( -1, onMoveAll )}>LEFT</button>
+        const right =   col === "right" ? "" :   <button  onClick = { () => this.onMoveAll( 1, onMoveAll )}>RIGHT</button>
 
         return (
-            <div > 
+            <div> 
                 <div className = "header-name">
-                    <input type = "checkbox" 
+                    <input 
+                        type        = "checkbox" 
                         className   = "header-checkbox"
                         checked     = { selectedList.length === data.length && data.length > 0 }
-                        onChange    = { e => this.onSelectedAll(e, data) }
+                        onChange    = { e => this.onSelectedAll( e, data ) }
                     />
-                    <div className="col-header">COL {col.toUpperCase()}</div>
+                    <div className = "col-header"> COL {col.toUpperCase()} </div>
                     <div className = "header-buttons">
                         {left}
                         {right}
