@@ -1,37 +1,36 @@
+import types from './action-types'
+
 const dataRequested = () => {
   return {
-    type: 'GET_DATA'
+    type: types.GET_DATA
   }
 };
 
 const dataLoaded = data => {
   return {
-    type: 'FETCH_DATA_SUCCESS',
+    type: types.FETCH_DATA_SUCCESS,
     data: data
   };
 };
 
 const dataError = error => {
   return {
-    type: 'FETCH_DATA_ERROR',
+    type: types.FETCH_DATA_ERROR,
     data: error
   };
 };
 
 const onMoveItem = data => {
     return {
-        type: 'MOVE_ITEM',
+        type: types.MOVE_ITEM,
         data: data
     }
 }
 
-const fetchData = ( withService, dispatch ) => () => {
+const fetchData = ({ withService, dispatch }) => () => {
   dispatch(dataRequested())
   withService.getData()
-      .then((data) => {
-        const val = dispatch(dataLoaded(data))
-        return val
-      })
+      .then((data) => dispatch(dataLoaded(data)))
       .catch((err) => dispatch(dataError(err)))
 }
 

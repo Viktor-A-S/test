@@ -1,15 +1,12 @@
-import { ServiceConsumer } from "../service-context"
+import { ServiceConsumer } from '../service-context'
 
-const withService = () => (Wrapped) => {
-    return (props) => {
-        return (
+const withService = () => 
+    Wrapped => 
+        props => 
             <ServiceConsumer>
                 {
                     (withService) => <Wrapped {... props } withService = { withService } />
                 }
             </ServiceConsumer>
-        )
-    }
-}
 
 export default withService

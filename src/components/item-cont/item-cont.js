@@ -1,43 +1,50 @@
 import React , {Component}      from 'react'
 import Item                     from '../item'
-import  './item-cont.css';
+import Buttons                  from '../buttons'
+import  './item-cont.css'
 
-class ItemCont  extends Component {
+const moveDefault = () => {}
+
+class ItemCont extends Component {
 
     state = {
         selectedList: []
     }
 
+    static defaultProps = {
+        onMoveLeft  : moveDefault,
+        onMoveRight : moveDefault
+    }
+
     onItemSelect = id => {
-        const idx = this.state.selectedList.findIndex( it => it === id )
+        const list  = this.state.selectedList
+        const idx   = list.findIndex(it => it === id)
+
         const selectedList = idx < 0 
-                ? [...this.state.selectedList, id] 
-                : [...this.state.selectedList.slice( 0, idx ), ...this.state.selectedList.slice( idx + 1 )]
-        this.setState ({
-            selectedList : selectedList
-        })
+                ? [...list, id] 
+                : [...list.slice(0, idx), ...list.slice(idx+1)]
+        this.setState ({ selectedList })
     }
 
-    onSelectedAll = ( e, data ) => {
-        const selectedList = e.target.checked ? data.map( it => { return it.id } ) : []
-        this.setState ({
-            selectedList : selectedList
-        })
+    onSelectedAll = ({ elem, data }) => {
+        const selectedList = elem.target.checked ? data.map(it => it.id) : []
+        this.setState ({ selectedList })
     }
 
-    onMoveAll = ( id, fx ) => {
-        fx( id, this.state.selectedList )
+    onMoveAll = ({ id, fx }) => {
+        fx({ dir: id, list: this.state.selectedList })
         this.setState ({
             selectedList : []
         })
     }
 
-    render() {
-        const { col, data, onItemClick, onMoveAll} = this.props
+    render () {
+        const { col, data, onMoveItem, onMoveAll, onMoveLeft, onMoveRight } = this.props
         const { selectedList } = this.state
-        const left =    col === "left"  ? "" :   <button  onClick = { () => this.onMoveAll( -1, onMoveAll )}>LEFT</button>
-        const right =   col === "right" ? "" :   <button  onClick = { () => this.onMoveAll( 1, onMoveAll )}>RIGHT</button>
 
+        const leftB  = onMoveLeft === moveDefault   ? null :   <button  onClick = { () => this.onMoveAll({ id: -1, fx: onMoveAll }) }>LEFT</button>
+        const rightB = onMoveRight === moveDefault  ? null :   <button  onClick = { () => this.onMoveAll({ id: 1,  fx: onMoveAll }) }>RIGHT</button>
+        
         return (
             <div> 
                 <div className = "header-name">
@@ -45,29 +52,32 @@ class ItemCont  extends Component {
                         type        = "checkbox" 
                         className   = "header-checkbox"
                         checked     = { selectedList.length === data.length && data.length > 0 }
-                        onChange    = { e => this.onSelectedAll( e, data ) }
+                        onChange    = { elem => this.onSelectedAll({ elem, data }) }
                     />
-                    <div className = "col-header"> COL {col.toUpperCase()} </div>
+                    <div className = "col-header"> COL { col.toUpperCase() } </div>
                     <div className = "header-buttons">
-                        {left}
-                        {right}
+                        {leftB}
+                        {rightB}
                     </div>
                 </div>
                 <ul className="list-group-item p-1">
                     { data.map( item  => { return (
                         <Item 
-                            col             = { col } 
+                            key             = { item.id } 
                             id              = { item.id } 
                             title           = { item.title } 
                             checked         = { selectedList.includes(item.id) } 
-                            onItemClick     = { onItemClick }
+                            onMoveItem      = { onMoveItem }
                             onItemSelect    = { this.onItemSelect }
+
+                            onMoveLeft      = { onMoveLeft }
+                            onMoveRight     = { onMoveRight }
                         />)
-                    })}
+                    }) }
                 </ul>
             </div>
         )
     }
 }
 
-export default ItemCont;
+export default ItemCont

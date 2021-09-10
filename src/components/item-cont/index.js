@@ -1,3 +1,3 @@
-import ItemCont from './item-cont';
+import ItemCont from './item-cont'
 
-export default ItemCont;
+export default ItemCont

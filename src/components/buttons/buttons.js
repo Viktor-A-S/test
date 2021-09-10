@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Buttons =  ( { id, col, onItemClick } ) => {
+const Buttons =  ({ id, onMoveItem }) => {
     
-    const left = col === "left" ? "" : <button className="btn btn-secondary"    onClick={()=> onItemClick(-1 * id)}>Left</button>
-    const right = col === "right" ? "": <button className="btn btn-secondary"   onClick={()=> onItemClick( id )}>Right</button>
+    const left  = <button className="btn btn-secondary"   onClick={()=> onMoveItem( -1 * id )}>Left</button>
+    const right = <button className="btn btn-secondary"   onClick={()=> onMoveItem( id )}>Right</button>
 
     return (
         <div className="btn-group me-2 item-buttons">

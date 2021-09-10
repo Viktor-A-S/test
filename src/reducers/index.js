@@ -1,74 +1,74 @@
+import types from '../actions/action-types'
+
 const initialState = {
-  data : { }
+  data : {}
 }
 
-const getKeys = data => Object.keys( data );
+const getKeys = data => Object.keys(data)
 
-const getKey = ( data, id ) => {
-  let cur = { 
+const getKey = ({ data, id }) => {
+  const cur = { 
       key : null, 
       oIdx : null, 
       iIdx : null
     }
-  const keys = getKeys( data )
+  const keys = getKeys(data)
 
-  keys.map(( key, index ) => {
-    var idx = data[ key ].findIndex( el => el.id === getId( id ));
+  keys.map((key, index) => {
+    const idx = data[key].findIndex(el => el.id === getId(id))
 
-    if( idx > -1) {
+    if(idx > -1) {
       cur.key   = key
       cur.oIdx  = index  //object index
       cur.iIdx  = idx    //item index
       return
     }
   })
-  return cur;
+  return cur
 }
 
-const getId = id => {
-  return (( id < 0 && id != 0 ) ? id * -1 : id )
-}
+const getId = id => ((id < 0 && id != 0) ? id * -1 : id)
 
-const onMoveItem = ( data, id ) => {
-  const cur     = getKey( data, id );
-  const toLeft  = Object.is( id, -0 ) || Math.sign( id ) == -1
-  const toKey   = getKeys( data )[ cur.oIdx + ( toLeft ? -1 : 1 )]
+const onMoveItem = (data, id) => {
+  const cur     = getKey({ data, id })
+  const toLeft  = Object.is(id, -0) || Math.sign(id) == -1
+  const toKey   = getKeys(data)[cur.oIdx + (toLeft ? -1 : 1)]
 
   return {
     ...data ,
-    [ toKey ]   : [...data[ toKey ], 
-                      data[ cur.key ][ cur.iIdx ]],
-    [ cur.key ] : [...data[ cur.key ].slice( 0, cur.iIdx ), 
-                   ...data[ cur.key ].slice( cur.iIdx + 1 )]
+    [toKey]   : [...data[toKey], 
+                      data[cur.key][cur.iIdx]],
+    [cur.key] : [...data[cur.key].slice(0, cur.iIdx), 
+                   ...data[cur.key].slice(cur.iIdx + 1)]
   }
 };
 
-const reducer = ( state = initialState, action ) => {
+const reducer = (state = initialState, action) => {
 
-    switch ( action.type ) { 
-      case 'GET_DATA':
+    switch (action.type) { 
+      case types.GET_DATA:
         return {
           state
         }
       
-      case 'FETCH_DATA_SUCCESS':
+      case types.FETCH_DATA_SUCCESS:
         return {
             data: action.data,
         }
 
-      case 'FETCH_DATA_ERROR':
+      case types.FETCH_DATA_ERROR:
         return {
             state
         }
 
-      case 'MOVE_ITEM':
+      case types.MOVE_ITEM:
         return {
-          data : onMoveItem( state.data, action.data.id )
+          data : onMoveItem(state.data, action.data.id)
         }
 
       default:
-        return state;
+        return state
     }
-  };
+  }
   
-  export default reducer;
+  export default reducer
