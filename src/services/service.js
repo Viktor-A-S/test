@@ -18,9 +18,5 @@ export default class DataService {
         ]
     }
 
-    getData() {
-        return new Promise((resolve) => {
-            resolve(this.data)
-        })
-    }
+    getData() { return new Promise((resolve) => { resolve(this.data) }) }
 }

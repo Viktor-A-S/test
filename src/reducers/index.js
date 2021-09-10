@@ -1,16 +1,14 @@
 import types from '../actions/action-types'
 
-const initialState = {
-  data : {}
-}
+const initialState = { data: {} }
 
 const getKeys = data => Object.keys(data)
 
 const getKey = ({ data, id }) => {
   const cur = { 
-      key : null, 
-      oIdx : null, 
-      iIdx : null
+      key:  null, 
+      oIdx: null, 
+      iIdx: null
     }
   const keys = getKeys(data)
 
@@ -36,10 +34,10 @@ const onMoveItem = (data, id) => {
 
   return {
     ...data ,
-    [toKey]   : [...data[toKey], 
-                      data[cur.key][cur.iIdx]],
-    [cur.key] : [...data[cur.key].slice(0, cur.iIdx), 
-                   ...data[cur.key].slice(cur.iIdx + 1)]
+    [toKey]:   [...data[toKey], 
+                   data[cur.key][cur.iIdx]],
+    [cur.key]: [...data[cur.key].slice(0, cur.iIdx), 
+                ...data[cur.key].slice(cur.iIdx + 1)]
   }
 };
 

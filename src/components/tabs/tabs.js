@@ -2,13 +2,13 @@ import React                from 'react'
 import { Link }             from 'react-router-dom'
 import                      './tabs.css'
 
-const Tabs =  ({ keys, page }) => {
+const Tabs = ({ keys, page }) => {
     const link = item => {
         const cls = page === item ? 'active' : '' 
 
         return (
             <li className={ cls } key={ `tab-${item}` }>
-                <Link to = { `/${item}` }>
+                <Link to={ `/${item}` }>
                     { item.toUpperCase() }
                 </Link>
             </li>

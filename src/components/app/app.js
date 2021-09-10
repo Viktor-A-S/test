@@ -38,7 +38,7 @@ class App extends Component {
   render () {
     const { data } = this.props
 
-    if ( !data  ||  this.getKeys().length == 0) 
+    if (!data || this.getKeys().length == 0) 
       return <div> LOADING !!!</div>
 
     return (
@@ -77,7 +77,7 @@ class App extends Component {
                             data          =   { data[page] } 
                             onMoveItem    =   { this.onMoveItem }
                             onMoveAll     =   { this.onMoveAll }
-                            details       =   { () => this.getButtonsDetails(page) }
+                            { ...this.getButtonsDetails(page) }
                           />
                         </div>
                     </div>

@@ -7,7 +7,7 @@ import DataService                      from './services/service'
 import { ServiceProvider }              from './components/service-context'
 import store                            from './store'
 
-const dataService = new DataService();
+const dataService = new DataService()
 
 ReactDOM.render(
     <Provider store = { store }>

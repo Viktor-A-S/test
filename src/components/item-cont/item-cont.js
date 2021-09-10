@@ -1,7 +1,7 @@
-import React , {Component}      from 'react'
+import React, {Component}       from 'react'
 import Item                     from '../item'
 import Buttons                  from '../buttons'
-import  './item-cont.css'
+import                          './item-cont.css'
 
 const moveDefault = () => {}
 
@@ -12,8 +12,8 @@ class ItemCont extends Component {
     }
 
     static defaultProps = {
-        onMoveLeft  : moveDefault,
-        onMoveRight : moveDefault
+        onMoveLeft:  moveDefault,
+        onMoveRight: moveDefault
     }
 
     onItemSelect = id => {
@@ -34,7 +34,7 @@ class ItemCont extends Component {
     onMoveAll = ({ id, fx }) => {
         fx({ dir: id, list: this.state.selectedList })
         this.setState ({
-            selectedList : []
+            selectedList: []
         })
     }
 
@@ -42,20 +42,23 @@ class ItemCont extends Component {
         const { col, data, onMoveItem, onMoveAll, onMoveLeft, onMoveRight } = this.props
         const { selectedList } = this.state
 
-        const leftB  = onMoveLeft === moveDefault   ? null :   <button  onClick = { () => this.onMoveAll({ id: -1, fx: onMoveAll }) }>LEFT</button>
-        const rightB = onMoveRight === moveDefault  ? null :   <button  onClick = { () => this.onMoveAll({ id: 1,  fx: onMoveAll }) }>RIGHT</button>
+        const leftB  = onMoveLeft === moveDefault  ? null : <button  onClick={ () => this.onMoveAll({ id: -1, fx: onMoveAll }) }>LEFT</button>
+        const rightB = onMoveRight === moveDefault ? null : <button  onClick={ () => this.onMoveAll({ id: 1,  fx: onMoveAll }) }>RIGHT</button>
+
+        const indterm =   data.length > selectedList.length && selectedList.length > 0
         
         return (
             <div> 
-                <div className = "header-name">
+                <div className="header-name">
                     <input 
                         type        = "checkbox" 
                         className   = "header-checkbox"
                         checked     = { selectedList.length === data.length && data.length > 0 }
                         onChange    = { elem => this.onSelectedAll({ elem, data }) }
+                        ref         = { el => el ? el.indeterminate = indterm : null }
                     />
-                    <div className = "col-header"> COL { col.toUpperCase() } </div>
-                    <div className = "header-buttons">
+                    <div className="col-header"> COL { col.toUpperCase() } </div>
+                    <div className="header-buttons">
                         {leftB}
                         {rightB}
                     </div>

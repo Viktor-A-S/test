@@ -1,4 +1,4 @@
-import React , {Component}      from 'react'
+import React, {Component}      from 'react'
 import                          './item.css'
 
 const moveDefault = () => {}
@@ -13,8 +13,8 @@ class Item extends Component  {
     render () {
         const { id, title, checked, onItemSelect, onMoveItem, onMoveLeft, onMoveRight } = this.props
     
-        const leftB = onMoveLeft === moveDefault ? null:    <button className="btn btn-secondary"   onClick={ () => onMoveItem(-id) }>Left</button>
-        const rightB = onMoveRight === moveDefault ? null:  <button className="btn btn-secondary"   onClick={ () => onMoveItem(id) }>Right</button>   
+        const leftB = onMoveLeft === moveDefault   ? null : <button className="btn btn-secondary" onClick={ () => onMoveItem(-id) }>Left</button>
+        const rightB = onMoveRight === moveDefault ? null : <button className="btn btn-secondary" onClick={ () => onMoveItem(id) }>Right</button>   
     
         const item = <li className="item-list list-group item-box" key={ id }>
                         <input  type        = "checkbox" 
@@ -25,14 +25,14 @@ class Item extends Component  {
                             <h4>{ title }</h4>
                         </div>
                         <div className="btn-group me-2 item-buttons">
-                            {leftB}
-                            {rightB}
+                            { leftB }
+                            { rightB }
                         </div>
                     </li>
 
         return (
             <ul className="list-group-item p-1">
-                {item}
+                { item }
             </ul>
         )
     }

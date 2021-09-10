@@ -8,7 +8,7 @@
   .col-header{
     text-align: center;
     float: left;
-    margin-left: 35px;
+    margin-left: 20px;
   }
   
   .main {
@@ -65,5 +65,18 @@
   }
   
   .header-buttons{
-    float: right  ;
+    float: right; 
+  }
+
+  .header-buttons button{
+    border: none;
+    border-radius: 10px;
+    width: 68px;
+    height: 35px;
+    margin-bottom: -15px;
+    background-color: #b8c9e2;
+  }
+
+  .header-buttons button:hover{
+    background-color: #e4ebf5;
   }

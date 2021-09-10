@@ -5,7 +5,7 @@ const withService = () =>
         props => 
             <ServiceConsumer>
                 {
-                    (withService) => <Wrapped {... props } withService = { withService } />
+                    (withService) => <Wrapped { ... props } withService={ withService } />
                 }
             </ServiceConsumer>
 
